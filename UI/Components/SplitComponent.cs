@@ -245,11 +245,11 @@ namespace LiveSplit.UI.Components
                     g.FillRectangle(currentSplitBrush, 0, 0, width, height);
                 }
 
-                if (IsHighlight)
-                {
-                    Pen highlightPen = new Pen(Color.White);
-                    g.DrawRectangle(highlightPen, 0, 0, width - 1, height - 1);
-                }
+                //if (IsHighlight)
+                //{
+                //    Pen highlightPen = new Pen(Color.White);
+                //    g.DrawRectangle(highlightPen, 0, 0, width - 1, height - 1);
+                //}
 
                 var icon = Split.Icon;
                 if (DisplayIcon && icon != null)
