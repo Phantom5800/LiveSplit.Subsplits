@@ -1,4 +1,5 @@
 ﻿using LiveSplit.Model;
+using LiveSplit.Model.Comparisons;
 using LiveSplit.TimeFormatters;
 using System;
 using System.Collections.Generic;
@@ -690,6 +691,9 @@ namespace LiveSplit.UI.Components
                 if (Header)
                 {
                     var comparison = Settings.HeaderComparison == "Current Comparison" ? state.CurrentComparison : Settings.HeaderComparison;
+                    if (state.CurrentComparison == NoneComparisonGenerator.ComparisonName)
+                        comparison = state.CurrentComparison;
+
                     if (!state.Run.Comparisons.Contains(comparison))
                         comparison = state.CurrentComparison;
 
@@ -715,9 +719,9 @@ namespace LiveSplit.UI.Components
                         TimeLabel.Text = DeltaTimeFormatter.Format(deltaTime);
                     else
                         if (splitIndex < state.CurrentSplitIndex)
-                            TimeLabel.Text = TimeFormatConstants.DASH;
-                        else
-                            TimeLabel.Text = HeaderTimesFormatter.Format(getSectionComparison(state, splitIndex, TopSplit, comparison, timingMethod));
+                        TimeLabel.Text = TimeFormatConstants.DASH;
+                    else
+                        TimeLabel.Text = HeaderTimesFormatter.Format(getSectionComparison(state, splitIndex, TopSplit, comparison, timingMethod));
 
                     TimeSpan? sectionTime = getSectionTime(state, splitIndex, TopSplit, comparison, timingMethod);
                     DeltaLabel.Text = SectionTimerFormatter.Format(sectionTime);
@@ -764,6 +768,8 @@ namespace LiveSplit.UI.Components
         protected void UpdateColumn(LiveSplitState state, SimpleLabel label, ColumnData data)
         {
             var comparison = data.Comparison == "Current Comparison" ? state.CurrentComparison : data.Comparison;
+            if (state.CurrentComparison == NoneComparisonGenerator.ComparisonName)
+                comparison = state.CurrentComparison;
             if (!state.Run.Comparisons.Contains(comparison))
                 comparison = state.CurrentComparison;
 
@@ -900,6 +906,8 @@ namespace LiveSplit.UI.Components
         protected void UpdateCollapsedColumn(LiveSplitState state, SimpleLabel label, ColumnData data)
         {
             var comparison = data.Comparison == "Current Comparison" ? state.CurrentComparison : data.Comparison;
+            if (state.CurrentComparison == NoneComparisonGenerator.ComparisonName)
+                comparison = state.CurrentComparison;
             if (!state.Run.Comparisons.Contains(comparison))
                 comparison = state.CurrentComparison;
 
