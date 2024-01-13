@@ -691,8 +691,6 @@ namespace LiveSplit.UI.Components
                 if (Header)
                 {
                     var comparison = Settings.HeaderComparison == "Current Comparison" ? state.CurrentComparison : Settings.HeaderComparison;
-                    if (state.CurrentComparison == NoneComparisonGenerator.ComparisonName)
-                        comparison = state.CurrentComparison;
 
                     if (!state.Run.Comparisons.Contains(comparison))
                         comparison = state.CurrentComparison;
@@ -723,8 +721,15 @@ namespace LiveSplit.UI.Components
                     else
                         TimeLabel.Text = HeaderTimesFormatter.Format(getSectionComparison(state, splitIndex, TopSplit, comparison, timingMethod));
 
-                    TimeSpan? sectionTime = getSectionTime(state, splitIndex, TopSplit, comparison, timingMethod);
-                    DeltaLabel.Text = SectionTimerFormatter.Format(sectionTime);
+                    if (state.CurrentComparison != NoneComparisonGenerator.ComparisonName)
+                    {
+                        TimeSpan? sectionTime = getSectionTime(state, splitIndex, TopSplit, comparison, timingMethod);
+                        DeltaLabel.Text = SectionTimerFormatter.Format(sectionTime);
+                    }
+                    else
+                    {
+                        DeltaLabel.Text = TimeFormatConstants.DASH;
+                    }
                     if (splitIndex < state.CurrentSplitIndex)
                         DeltaLabel.ForeColor = (Settings.OverrideHeaderColor ? Settings.HeaderTimesColor : state.LayoutSettings.TextColor);
                     else
@@ -768,8 +773,6 @@ namespace LiveSplit.UI.Components
         protected void UpdateColumn(LiveSplitState state, SimpleLabel label, ColumnData data)
         {
             var comparison = data.Comparison == "Current Comparison" ? state.CurrentComparison : data.Comparison;
-            if (state.CurrentComparison == NoneComparisonGenerator.ComparisonName)
-                comparison = state.CurrentComparison;
             if (!state.Run.Comparisons.Contains(comparison))
                 comparison = state.CurrentComparison;
 
@@ -883,6 +886,18 @@ namespace LiveSplit.UI.Components
                     label.Text = "";
                 }
             }
+
+            if (state.CurrentComparison == NoneComparisonGenerator.ComparisonName)
+            {
+                if (type == ColumnType.Delta || type == ColumnType.SegmentDelta)
+                {
+                    label.Text = "";
+                }
+                else
+                {
+                    label.Text = TimeFormatConstants.DASH;
+                }
+            }
         }
 
         private TimeSpan? CheckLiveDeltaCollapsed(LiveSplitState state, int splitIndex, bool splitDelta, string comparison, TimingMethod method)
@@ -906,8 +921,6 @@ namespace LiveSplit.UI.Components
         protected void UpdateCollapsedColumn(LiveSplitState state, SimpleLabel label, ColumnData data)
         {
             var comparison = data.Comparison == "Current Comparison" ? state.CurrentComparison : data.Comparison;
-            if (state.CurrentComparison == NoneComparisonGenerator.ComparisonName)
-                comparison = state.CurrentComparison;
             if (!state.Run.Comparisons.Contains(comparison))
                 comparison = state.CurrentComparison;
 
@@ -1014,6 +1027,18 @@ namespace LiveSplit.UI.Components
                 else if (type == ColumnType.Delta || type == ColumnType.SegmentDelta)
                 {
                     label.Text = "";
+                }
+            }
+
+            if (state.CurrentComparison == NoneComparisonGenerator.ComparisonName)
+            {
+                if (type == ColumnType.Delta || type == ColumnType.SegmentDelta)
+                {
+                    label.Text = "";
+                }
+                else
+                {
+                    label.Text = TimeFormatConstants.DASH;
                 }
             }
         }
